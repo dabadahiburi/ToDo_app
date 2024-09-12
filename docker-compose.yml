@@ -1,0 +1,29 @@
+version: '3'  # Docker Compose のバージョンを指定。バージョン3は安定した最新バージョンの一つ。
+
+services:
+  frontend:
+    build: ./frontend  # フロントエンド用のDockerfileが格納されているディレクトリを指定。
+    ports:
+      - "3000:3000"  # コンテナのポート3000をホストのポート3000にマッピング。フロントエンドアプリはポート3000で動作。
+    volumes:
+      - ./frontend:/app  # ホストの ./frontend ディレクトリをコンテナの /app ディレクトリにマウント。コード変更がリアルタイムに反映される。
+    environment:
+      - NODE_ENV=development  # 環境変数を設定し、Node.jsの環境を開発モードに設定。
+
+  backend:
+    build: ./backend  # バックエンド用のDockerfileが格納されているディレクトリを指定。
+    ports:
+      - "8080:8080"  # コンテナのポート8080をホストのポート8080にマッピング。バックエンドAPIはポート8080で動作。
+    volumes:
+      - ./backend:/app  # ホストの ./backend ディレクトリをコンテナの /app ディレクトリにマウント。コード変更がリアルタイムに反映される。
+    environment:
+      - GO_ENV=development  # 環境変数を設定し、Goの環境を開発モードに設定。
+
+  db:
+    image: postgres  # PostgreSQLの公式イメージを使用。
+    environment:
+      POSTGRES_USER: postgres  # PostgreSQLのユーザー名をpostgresに設定。
+      POSTGRES_PASSWORD: postgres  # PostgreSQLのパスワードをpostgresに設定。
+      POSTGRES_DB: postgres  # デフォルトで作成されるデータベース名をpostgresに設定。
+    ports:
+      - "5432:5432"  # コンテナのポート5432（PostgreSQLのデフォルトポート）をホストのポート5432にマッピング。
