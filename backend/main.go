@@ -62,6 +62,25 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Task not found", http.StatusNotFound) // タスクが見つからない場合は404エラーを返す
 }
 
+func editTask(w http.ResponseWriter, r *http.Request) {
+	var editedTask Task
+	err := json.NewDecoder(r.Body).Decode(&editedTask)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	for i, task := range tasks {
+		if task.ID == editedTask.ID {
+			tasks[i].Title = editedTask.Title
+			tasks[i].Date = editedTask.Date
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+	}
+	http.Error(w, "Task not found", http.StatusNotFound) // タスクが見つからない場合は404エラーを返す
+}
+
 
 func main() {
 	// マルチプレクサを作成
@@ -69,6 +88,7 @@ func main() {
 	mux.HandleFunc("/tasks", getTasks)
 	mux.HandleFunc("/tasks/create", createTask)
 	mux.HandleFunc("/tasks/delete", deleteTask)
+	mux.HandleFunc("/tasks/edit", editTask)
 
 	// CORSミドルウェアを設定
 	handler := cors.Default().Handler(mux)
