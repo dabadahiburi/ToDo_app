@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-
+	"strconv"
 	"github.com/rs/cors"
 )
 
@@ -45,11 +45,30 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newTask)
 }
 
+func deleteTask(w http.ResponseWriter, r *http.Request) {
+	idStr:= r.URL.Query().Get("id") // URLパラメータからIDを取得
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest) // エラーが発生した場合は400エラーを返す
+		return
+	}
+	for i, task := range tasks {
+		if task.ID == id {
+			tasks = append(tasks[:i], tasks[i+1:]...) // タスクを削除
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+	}
+	http.Error(w, "Task not found", http.StatusNotFound) // タスクが見つからない場合は404エラーを返す
+}
+
+
 func main() {
 	// マルチプレクサを作成
 	mux := http.NewServeMux()
 	mux.HandleFunc("/tasks", getTasks)
 	mux.HandleFunc("/tasks/create", createTask)
+	mux.HandleFunc("/tasks/delete", deleteTask)
 
 	// CORSミドルウェアを設定
 	handler := cors.Default().Handler(mux)

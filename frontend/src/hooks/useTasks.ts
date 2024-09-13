@@ -16,7 +16,7 @@ export const useTask = () => {
       .catch(error => console.error('Error fetching tasks:', error));
   }, []);
 
-  return { tasks };
+  return { tasks ,setTasks};
 };
 
 export default useTask;
