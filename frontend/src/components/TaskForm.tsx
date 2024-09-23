@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const TaskForm: React.FC = () => {
-  const [newTask, setNewTask] = useState({ title: '', date: '' });
+  const [newTask, setNewTask] = useState({ title: '', date: '', completed: false });
 
   const createTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,7 +14,7 @@ const TaskForm: React.FC = () => {
     })
     .then(response => response.json())
     .then(data => {
-      setNewTask({ title: '', date: '' });
+      setNewTask({ title: '', date: '', completed: false });
     })
     .catch(error => console.error('Error creating task:', error));
   };

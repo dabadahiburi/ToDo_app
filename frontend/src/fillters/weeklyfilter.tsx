@@ -15,7 +15,7 @@ const filterTasksByDayOfWeek = (tasks: Task[], datOfWeek: number) => {
 
 // 曜日ごとにタスクをフィルターして表示するコンポーネント
 const WeeklyFilter: React.FC<WeeklyFilterProps> = ({ tasks }) => {
-  const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日'];
+  const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
 
   return (
     <div>
