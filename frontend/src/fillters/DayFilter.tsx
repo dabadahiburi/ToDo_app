@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Task } from "../components/type/Task";
   
 interface DayFilterProps {

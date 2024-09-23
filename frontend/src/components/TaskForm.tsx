@@ -48,9 +48,9 @@ const TaskForm: React.FC = () => {
 
 
   return (
-    <form onSubmit={handleSubmit} className='p-4 bg-gray-100 rounded-lg shadow-md'>
+    <form onSubmit={handleSubmit} className='p-4 bg-gray-100 rounded-lg shadow-md text-left'>
       <div>
-        <label className='block text-gray-700'>タイトル</label>
+        <label className='block text-gray-700 font-bold'>タイトル</label>
         <input
           type='text'
           name='title'
@@ -62,7 +62,7 @@ const TaskForm: React.FC = () => {
       </div>
       <div className='flex'>
         <div className='w-1/2'>
-          <label className='block text-gray-700'>期限</label>
+          <label className='block text-gray-700 font-bold'>期限</label>
           <input
             type='date'
             name='date'
@@ -73,7 +73,7 @@ const TaskForm: React.FC = () => {
           />
         </div>
         <div className='w-1/2'>
-          <label className='block text-gray-700'>時間</label>
+          <label className='block text-gray-700 font-bold '>時間</label>
           <input
             type='time'
             name='time'
@@ -85,7 +85,7 @@ const TaskForm: React.FC = () => {
         </div>
       </div>
       <div>
-        <label className='block text-gray-700'>詳細</label>
+        <label className='block text-gray-700 font-bold'>詳細</label>
         <textarea
           name='description'
           value={task.description}
@@ -96,7 +96,7 @@ const TaskForm: React.FC = () => {
         />
       </div>
       <div>
-        <label className='block text-gray-700'>周期</label>
+        <label className='block text-gray-700 font-bold'>周期</label>
         <select
           name='recurrence'
           value={task.recurrence}
