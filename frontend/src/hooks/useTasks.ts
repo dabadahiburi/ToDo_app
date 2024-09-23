@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   date: string;
