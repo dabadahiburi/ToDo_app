@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Task } from "../hooks/useTasks";
+import { Task } from "../components/type/Task";
   
 interface DayFilterProps {
   tasks: Task[];

@@ -5,12 +5,30 @@ interface Task{
   id: number;
   title: string;
   date: string;
+  completed: boolean;
 }
 
 const TaskList: React.FC = () => {
   const { tasks, setTasks } = useTasks();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
+  // タスクの完了状態を更新
+  const toggleTaskCompletion = (task: Task) => {
+    const updatedTask = { ...task, completed: !task.completed };
+    fetch(`http://localhost:8080/tasks/complete?id=${task.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedTask),
+    })
+      .then(() => {
+        setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
+      })
+      .catch(error => console.error('Error updating task completion:', error));
+  };
+
+  // タスクを削除
   const deleteTask = (id: number) => {
     fetch(`http://localhost:8080/tasks/delete?id=${id}`, {
       method: 'DELETE',
@@ -21,6 +39,7 @@ const TaskList: React.FC = () => {
       .catch(error => console.error('Error deleting task:', error));
   };
 
+  // タスクを編集
   const editTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingTask) {
@@ -39,6 +58,7 @@ const TaskList: React.FC = () => {
         }
   };
 
+  // タスクの入力フォームの変更
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (editingTask) {
       setEditingTask({ ...editingTask, [e.target.name]: e.target.value });
@@ -47,16 +67,14 @@ const TaskList: React.FC = () => {
 
   const renderTasks = () => {
     return tasks.map(task => (
-      <div key={task.id}>
-        <h3>{task.title}</h3>
-        <p>{task.date}</p>
+      <div key={task.id} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+        <input type="checkbox" checked={task.completed} onChange={() => toggleTaskCompletion(task)} />
+        <span>{task.title} - {task.date}</span>
         <button onClick={() => deleteTask(task.id)}>Delete</button>
         <button onClick={() => setEditingTask(task)}>Edit</button>
       </div>
     ));
   };
-
-
 
   return (
     <div>
