@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useTasks from '../hooks/useTasks'; // カスタムフックを利用
-import { Task } from "../components/type/Task";
+import { Task } from '../components/type/Task';
 
 
 const TaskList: React.FC = () => {
