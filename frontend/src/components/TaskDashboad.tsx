@@ -9,11 +9,31 @@ import MonthFilter from '../fillters/MonthFilter';
 
 const TaskDashboard: React.FC = () => {
   const { tasks } = useTask();
-  const[activeTab, setActiveTab] = useState('day');
+  const [activeTab, setActiveTab] = useState('day');
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   return (
     <div>
-      <TaskForm />
+      <div className='relative'>
+        <button onClick={() => setIsFormVisible(true)}
+        className='fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg'>
+        タスク作成
+        </button>
+        {/* タスク作成フォーム */}
+        <div
+          className={`fixed bottom-0 left-0 right-0 transition-transform duration-300 ${
+          isFormVisible ? 'translate-y-0' : 'translate-y-full'
+            } bg-white p-4 shadow-lg`}
+        >
+          <button
+            onClick={() => setIsFormVisible(false)}
+            className='absolute top-2 right-2 text-gray-500'
+          >
+            閉じる
+          </button>
+          <TaskForm />
+        </div>
+      </div>
       <TaskList />
       <div>
         <button onClick={()=> setActiveTab('day')}>日付</button>
