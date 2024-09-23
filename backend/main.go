@@ -106,8 +106,8 @@ func updateTaskCOmpletion(w http.ResponseWriter, r *http.Request) {
 		if task.ID == id {
 			// IDが一致するタスクが見つかった場合、完了状態を更新
 			tasks[i].Completed = updatedTask.Completed
-			// 更新成功を示すステータスコード200 OKを設定
-			w.WriteHeader(http.StatusOK)
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(tasks[i]) // 完了状態が更新されたタスクを返す
 			return
 		}
 	}
@@ -126,7 +126,15 @@ func main() {
 	mux.HandleFunc("/tasks/complete", updateTaskCOmpletion)
 
 	// CORSミドルウェアを設定
-	handler := cors.Default().Handler(mux)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},        // フロントエンドのオリジンを許可
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"}, // 許可するHTTPメソッド
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: true,
+	})
+
+	// CORSミドルウェアを設定
+	handler := c.Handler(mux)
 
 	// サーバーが8080ポートで実行されていることを確認
 	log.Println("Server is running on port 8080")

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTask } from '../hooks/useTasks';
-// import TaskList from './TaskList';
+import TaskList from './TaskList';
 import TaskForm from './TaskForm';
 import DayFilter from '../fillters/DayFilter';
 import WeeklyFilter from '../fillters/weeklyfilter';
@@ -14,7 +14,7 @@ const TaskDashboard: React.FC = () => {
   return (
     <div>
       <TaskForm />
-
+      <TaskList />
       <div>
         <button onClick={()=> setActiveTab('day')}>日付</button>
         <button onClick={()=> setActiveTab('weekly')}>週間</button>
@@ -24,7 +24,6 @@ const TaskDashboard: React.FC = () => {
       {activeTab === 'day' && <DayFilter tasks={tasks} />}
       {activeTab === 'weekly' && <WeeklyFilter tasks={tasks} />}
       {activeTab === 'month' && <MonthFilter tasks={tasks} />}
-      {/* <TaskList /> */}
     </div>
   );
 };

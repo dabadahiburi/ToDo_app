@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import useTasks from '../hooks/useTasks'; // カスタムフックを利用
+import { Task } from './type/Task';
 
-interface Task{
-  id: number;
-  title: string;
-  date: string;
-  completed: boolean;
-}
 
 const TaskList: React.FC = () => {
   const { tasks, setTasks } = useTasks();
@@ -22,10 +17,20 @@ const TaskList: React.FC = () => {
       },
       body: JSON.stringify(updatedTask),
     })
-      .then(() => {
-        setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
-      })
-      .catch(error => console.error('Error updating task completion:', error));
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('サーバーエラーが発生しました');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('タスク更新成功:', data);
+      setTasks(prevTasks => prevTasks.map(t => t.id === task.id ? updatedTask : t));
+    })
+    .catch(error => {
+      console.error('タスク更新エラー:', error);
+      // エラーメッセージをユーザーに表示する処理をここに追加
+    });
   };
 
   // タスクを削除
