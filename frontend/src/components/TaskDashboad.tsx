@@ -36,9 +36,14 @@ const TaskDashboard: React.FC = () => {
       </div>
       <TaskList />
       <div>
-        <button onClick={()=> setActiveTab('day')}>日付</button>
-        <button onClick={()=> setActiveTab('weekly')}>週間</button>
-        <button onClick={()=> setActiveTab('month')}>月間</button>
+        <button onClick={() => setActiveTab('day')}
+        className={`p-2 ${activeTab === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-2 rounded-md`}>日付</button>        
+
+        <button onClick={() => setActiveTab('weekly')}
+        className={`p-2 ${activeTab === 'weekly' ? 'bg-blue-500 text-white' : 'bg-gray-200'} p  -2 rounded-md`}>週間</button>
+        
+        <button onClick={()=> setActiveTab('month')}
+        className={`p-2 ${activeTab === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-2 rounded-md`}>月間</button>
       </div>
       {/* フィルタリング機能追加 */}
       {activeTab === 'day' && <DayFilter tasks={tasks} />}
